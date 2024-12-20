@@ -1,0 +1,180 @@
+openapi: 3.0.1
+info:
+  contact: {}
+  description: API for control user's working time
+  title: Time Tracker
+  version: "1.0"
+servers:
+- url: //localhost:8080/
+paths:
+  /users:
+    get:
+      description: get user info
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.GetAllUsersResponse'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                type: integer
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                type: integer
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                type: integer
+          description: Internal Server Error
+      summary: GetUserInfo from API
+      tags:
+      - get info
+      x-accepts: application/json
+  /users/create:
+    post:
+      description: create a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/models.Employee'
+        description: user info
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: integer
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                type: integer
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                type: integer
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                type: integer
+          description: Internal Server Error
+      summary: CreateUser
+      tags:
+      - create
+      x-codegen-request-body-name: input
+      x-contentType: application/json
+      x-accepts: application/json
+components:
+  schemas:
+    models.Employee:
+      properties:
+        address:
+          type: string
+        name:
+          type: string
+        passport_number:
+          type: string
+        passport_serie:
+          type: string
+        patronymic:
+          type: string
+        surname:
+          type: string
+        task:
+          $ref: '#/components/schemas/models.Task'
+        uuid:
+          type: integer
+      type: object
+    models.EmployeeStore:
+      example:
+        passport_serie: 6
+        patronymic: patronymic
+        address: address
+        surname: surname
+        passport_number: 0
+        name: name
+        uuid: 1
+      properties:
+        address:
+          type: string
+        name:
+          type: string
+        passport_number:
+          type: integer
+        passport_serie:
+          type: integer
+        patronymic:
+          type: string
+        surname:
+          type: string
+        uuid:
+          type: integer
+      type: object
+    models.GetAllUsersResponse:
+      example:
+        response:
+        - passport_serie: 6
+          patronymic: patronymic
+          address: address
+          surname: surname
+          passport_number: 0
+          name: name
+          uuid: 1
+        - passport_serie: 6
+          patronymic: patronymic
+          address: address
+          surname: surname
+          passport_number: 0
+          name: name
+          uuid: 1
+      properties:
+        response:
+          items:
+            $ref: '#/components/schemas/models.EmployeeStore'
+          type: array
+      type: object
+    models.Period:
+      properties:
+        firstDate:
+          type: string
+        secondDate:
+          type: string
+      type: object
+    models.Task:
+      properties:
+        UUID:
+          type: integer
+        period:
+          $ref: '#/components/schemas/models.Period'
+        timeCost:
+          type: string
+        title:
+          type: string
+        workTime:
+          $ref: '#/components/schemas/models.WorkTime'
+      type: object
+    models.WorkTime:
+      properties:
+        finish:
+          type: string
+        start:
+          type: string
+      type: object
+x-original-swagger-version: "2.0"
+
